@@ -1,6 +1,6 @@
 import os
 import streamlit as st
-import supabase
+# import supabase
 from supabase import create_client, Client
 
 def logout_form(supabase_session):
@@ -47,7 +47,6 @@ def login_form():
         st.rerun()
 
 def button_clicked():
-    print('button clicked')
     if st.session_state.form_to_show == 'login':
         print('login -> signup')
         st.session_state.form_to_show = 'signup'
@@ -57,7 +56,12 @@ def button_clicked():
 
 def show_data():
     rows = st.session_state.supabase_client.table("Students").select("*").execute()
+    
+    st.write("dataframe")
     st.dataframe(rows.data)
+
+    st.write("data_editor")
+    st.data_editor(rows.data)
 
     # for row in rows.data:
     #     st.write(f"{row['first_name']} {row['last_name']}")
@@ -76,7 +80,7 @@ def main():
 
     # st.session_state.form_to_show = "login"
     if "form_to_show" not in st.session_state:
-        st.session_state.form_to_show = 'signup' 
+        st.session_state.form_to_show = 'login' 
 
     with st.sidebar:
         st.title("Welcome!")
