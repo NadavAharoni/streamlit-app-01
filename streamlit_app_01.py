@@ -127,6 +127,7 @@ def main():
     
     if st.session_state.supabase_client:
         supabase_session = st.session_state.supabase_client.auth.get_session()
+        st.write(F"supabase_session={supabase_session}")
         if supabase_session:
             show_data()
         else:
