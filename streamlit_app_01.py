@@ -45,7 +45,9 @@ def login_form():
         credentials['password'] = password
         try:
             user = st.session_state.supabase_client.auth.sign_in_with_password(credentials)
-            print(F"in login_form: user=\n{user}")  # debug
+            print(F"\nin login_form: user=\n{user}")  # debug
+            user2 = st.session_state.supabase_client.auth.get_user()
+            print(F"\nin login_form: user2=\n{user2}")  # debug
             st.session_state.user_state = "logged in"
         except Exception as inst:
             # st.write(type(inst))    # the exception type
@@ -84,7 +86,7 @@ def show_data():
     # st.write(st.session_state.supabase_client.postgrest)
 
 def main():
-    print('starting main()....')
+    print('\n\nstarting main()....')
     st.set_page_config(layout="wide")
 
     # initial connection to supabase
