@@ -84,11 +84,15 @@ def show_data():
 def main():
     st.set_page_config(layout="wide")
 
+    # initial connection to supabase
     url: str = os.environ.get("SUPABASE_URL")
     key: str = os.environ.get("SUPABASE_KEY")
     supabase_client: Client = create_client(url, key)
-
     st.session_state.supabase_client = supabase_client
+
+    st.write(F"st.session_state.supabase_client={st.session_state.supabase_client}")
+
+    # get the current user, this also checks if a user is logged in
     st.session_state.user = supabase_client.auth.get_user()
 
     if st.session_state.user:
@@ -125,9 +129,6 @@ def main():
         st.write(F"st.session_state.user_state={st.session_state.user_state}")
     else:
         st.write(F"st.session_state.user_state - no key!")
-    
-
-    st.write(F"st.session_state.supabase_client={st.session_state.supabase_client}")
 
     if st.session_state.supabase_client:
         supabase_session = st.session_state.supabase_client.auth.get_session()
