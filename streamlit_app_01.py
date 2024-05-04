@@ -44,7 +44,7 @@ def login_form():
         credentials['password'] = password
         try:
             user = st.session_state.supabase_client.auth.sign_in_with_password(credentials)
-            print(F"in login_form: user={user}")  # debug
+            print(F"in login_form: user=\n{user}")  # debug
             st.session_state.user_state = "logged in"
         except Exception as inst:
             # st.write(type(inst))    # the exception type
@@ -55,6 +55,7 @@ def login_form():
         st.write(F"st.session_state.user_state={st.session_state.user_state}")
 
         if st.session_state.user_state == "logged in":
+            print("calling st.rerun")
             st.rerun()
 
 def button_clicked():
