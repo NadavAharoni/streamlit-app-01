@@ -104,6 +104,7 @@ def main():
 
     # st.session_state.form_to_show = "login"
     if "form_to_show" not in st.session_state:
+        print('"form_to_show" not in st.session_state - showing login form')
         st.session_state.form_to_show = 'login' 
 
     with st.sidebar:
@@ -133,11 +134,13 @@ def main():
         st.write(F"st.session_state.user_state - no key!")
 
     if st.session_state.supabase_client:
-        supabase_session = st.session_state.supabase_client.auth.get_session()
-        st.write(F"supabase_session={supabase_session}")
+        supabase_auth_session = st.session_state.supabase_client.auth.get_session()
+        st.write(F"supabase_auth_session={supabase_auth_session}")
         if supabase_session:
+            print("supabase_auth_session is not Null, showing data")
             show_data()
         else:
+            print("supabase_auth_session is Null, showing signup or login form")
             if st.session_state.form_to_show == 'signup':
                 signup_form()
             else:
