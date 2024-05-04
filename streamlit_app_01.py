@@ -93,15 +93,15 @@ def main():
     supabase_client: Client = create_client(url, key)
     st.session_state.supabase_client = supabase_client
 
-    st.write(F"st.session_state.supabase_client={st.session_state.supabase_client}")
+    print(F"st.session_state.supabase_client={st.session_state.supabase_client}")
 
     # get the current user, this also checks if a user is logged in
     st.session_state.user = supabase_client.auth.get_user()
 
     if st.session_state.user:
-        st.write(F"st.session_state.user={st.session_state.user}")
+        print(F"st.session_state.user={st.session_state.user}")
     else:
-        st.write(F"st.session_state.user - no key")
+        print(F"st.session_state.user - no key")
 
     # st.session_state.form_to_show = "login"
     if "form_to_show" not in st.session_state:
