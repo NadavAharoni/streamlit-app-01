@@ -50,6 +50,8 @@ def login_form():
             st.write(F"inst.args={inst.args}")     # arguments stored in .args
             st.write(F"inst={inst}")
             st.session_state.user_state = "login error"
+        
+        st.write(F"st.session_state.user_state={st.session_state.user_state}")
 
         if st.session_state.user_state == "logged in":
             st.rerun()
@@ -85,10 +87,10 @@ def main():
     key: str = os.environ.get("SUPABASE_KEY")
     supabase_client: Client = create_client(url, key)
 
-    st.write(supabase_client)
-
     st.session_state.supabase_client = supabase_client
     st.session_state.user = supabase_client.auth.get_user()
+
+    st.write(F"st.session_state.user={st.session_state.user}")
 
     # st.session_state.form_to_show = "login"
     if "form_to_show" not in st.session_state:
@@ -115,6 +117,7 @@ def main():
         # st.markdown(F"###### form to show={st.session_state.form_to_show}")
 
     # main pane
+    st.write(F"st.session_state.user_state={st.session_state.user_state}")
     if st.session_state.supabase_client:
         supabase_session = st.session_state.supabase_client.auth.get_session()
         if supabase_session:
