@@ -124,6 +124,7 @@ def main():
         st.write(F"st.session_state.user_state={st.session_state.user_state}")
     else:
         st.write(F"st.session_state.user_state - no key!")
+    
     if st.session_state.supabase_client:
         supabase_session = st.session_state.supabase_client.auth.get_session()
         if supabase_session:
