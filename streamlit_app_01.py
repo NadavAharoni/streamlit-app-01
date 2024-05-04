@@ -3,6 +3,17 @@ import streamlit as st
 # import supabase
 from supabase import create_client, Client
 
+@st.cache_resource
+def init_supabase_connection():
+    # url = st.secrets["SUPABASE_URL"]
+    # key = st.secrets["SUPABASE_KEY"]
+
+    url: str = os.environ.get("SUPABASE_URL")
+    key: str = os.environ.get("SUPABASE_KEY")
+
+    return create_client(url, key)
+
+
 def logout_form(supabase_session):
     with st.form('log out'):
         st.write(F"{supabase_session.user.email}")
@@ -90,15 +101,11 @@ def main():
     st.set_page_config(layout="wide")
 
     # initial connection to supabase
-    url: str = os.environ.get("SUPABASE_URL")
-    key: str = os.environ.get("SUPABASE_KEY")
-    supabase_client: Client = create_client(url, key)
-    st.session_state.supabase_client = supabase_client
-
+    st.session_state.supabase_client = init_supabase_connection()
     print(F"st.session_state.supabase_client={st.session_state.supabase_client}")
 
     # get the current user, this also checks if a user is logged in
-    st.session_state.user = supabase_client.auth.get_user()
+    st.session_state.user = st.session_state.supabase_client.auth.get_user()
 
     if st.session_state.user:
         print(F"st.session_state.user={st.session_state.user}")
@@ -112,7 +119,7 @@ def main():
 
     with st.sidebar:
         st.title("Welcome!")
-        st.write(__file__)
+        # st.write(__file__)
         if st.session_state.supabase_client:
             # supabase_session = st.session_state.supabase_client.auth.get_user()
             supabase_session = st.session_state.supabase_client.auth.get_session()
@@ -138,7 +145,7 @@ def main():
 
     if st.session_state.supabase_client:
         supabase_auth_session = st.session_state.supabase_client.auth.get_session()
-        st.write(F"supabase_auth_session={supabase_auth_session}")
+        print(F"supabase_auth_session={supabase_auth_session}")
         if supabase_session:
             print("supabase_auth_session is not Null, showing data")
             show_data()
