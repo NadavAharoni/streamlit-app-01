@@ -84,6 +84,9 @@ def main():
     url: str = os.environ.get("SUPABASE_URL")
     key: str = os.environ.get("SUPABASE_KEY")
     supabase_client: Client = create_client(url, key)
+
+    st.write(supabase_client)
+
     st.session_state.supabase_client = supabase_client
     st.session_state.user = supabase_client.auth.get_user()
 
@@ -93,7 +96,7 @@ def main():
 
     with st.sidebar:
         st.title("Welcome!")
-        st.text(__file__)
+        st.write(__file__)
         if st.session_state.supabase_client:
             # supabase_session = st.session_state.supabase_client.auth.get_user()
             supabase_session = st.session_state.supabase_client.auth.get_session()
