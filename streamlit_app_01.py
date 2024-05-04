@@ -90,7 +90,10 @@ def main():
     st.session_state.supabase_client = supabase_client
     st.session_state.user = supabase_client.auth.get_user()
 
-    st.write(F"st.session_state.user={st.session_state.user}")
+    if st.session_state.user:
+        st.write(F"st.session_state.user={st.session_state.user}")
+    else:
+        st.write(F"st.session_state.user - no key")
 
     # st.session_state.form_to_show = "login"
     if "form_to_show" not in st.session_state:
@@ -117,7 +120,10 @@ def main():
         # st.markdown(F"###### form to show={st.session_state.form_to_show}")
 
     # main pane
-    st.write(F"st.session_state.user_state={st.session_state.user_state}")
+    if "user_state" in st.session_state:
+        st.write(F"st.session_state.user_state={st.session_state.user_state}")
+    else:
+        st.write(F"st.session_state.user_state - no key!")
     if st.session_state.supabase_client:
         supabase_session = st.session_state.supabase_client.auth.get_session()
         if supabase_session:
