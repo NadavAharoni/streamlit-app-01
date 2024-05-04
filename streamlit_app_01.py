@@ -38,6 +38,7 @@ def login_form():
         submit = st.form_submit_button('log in')
 
     if submit:
+        print("login_form: submit button was clicked")
         st.session_state.user_state = "login attempt"
         credentials = {}
         credentials['email'] = username
