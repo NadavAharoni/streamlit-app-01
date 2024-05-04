@@ -83,10 +83,10 @@ def button_clicked():
 def show_data():
     rows = st.session_state.supabase_client.table("Students").select("*").execute()
     
-    st.write("dataframe")
+    st.write("dataframe (read only)")
     st.dataframe(rows.data)
 
-    st.write("data_editor")
+    st.write("data_editor (editable)")
     st.data_editor(rows.data)
 
     # for row in rows.data:
