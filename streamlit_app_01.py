@@ -15,8 +15,8 @@ def logout_form(supabase_session):
 def signup_form():
     st.title("sign up")
     with st.form('sign up'):
-        signup_username = st.text_input(label='username', key='signup_username') # label_visibility="hidden"
-        signup_password = st.text_input(label='password', key='signup_password', type='password') # label_visibility="hidden"
+        signup_username = st.text_input(label='username', key='signup_username')
+        signup_password = st.text_input(label='password', key='signup_password', type='password')
         submit = st.form_submit_button('sign up')
 
     if submit:
@@ -25,26 +25,34 @@ def signup_form():
         credentials = {}
         credentials['email'] = signup_username
         credentials['password'] = signup_password
-        st.write(F'credentials={credentials}')
         res = st.session_state.supabase_client.auth.sign_up(credentials)
-        st.write(F"{res}")
+        # st.write(F"{res}")
         # st.rerun() ?
 
 def login_form():
     st.title("log in")
     with st.form('log in'):
         c1, c2  = st.columns([1, 1])
-        username =c1.text_input('username', key='username') # label_visibility="hidden"
-        password = c1.text_input('password', key='password', type='password') # label_visibility="hidden"
+        username =c1.text_input('username', key='username')
+        password = c1.text_input('password', key='password', type='password')
         submit = st.form_submit_button('log in')
 
     if submit:
-        st.write(F'username={username}')
+        st.session_state.user_state = "login attempt"
         credentials = {}
         credentials['email'] = username
         credentials['password'] = password
-        user = st.session_state.supabase_client.auth.sign_in_with_password(credentials)
-        st.rerun()
+        try:
+            user = st.session_state.supabase_client.auth.sign_in_with_password(credentials)
+            st.session_state.user_state = "logged in"
+        except Exception as inst:
+            # st.write(type(inst))    # the exception type
+            st.write(F"inst.args={inst.args}")     # arguments stored in .args
+            st.write(F"inst={inst}")
+            st.session_state.user_state = "login error"
+
+        if st.session_state.user_state == "logged in":
+            st.rerun()
 
 def button_clicked():
     if st.session_state.form_to_show == 'login':
@@ -65,9 +73,10 @@ def show_data():
 
     # for row in rows.data:
     #     st.write(f"{row['first_name']} {row['last_name']}")
-
-
-    
+    table = st.session_state.supabase_client.table("Students")
+    st.write(table)
+    # st.write(F"{type(table)}")
+    # st.write(st.session_state.supabase_client.postgrest)
 
 def main():
     st.set_page_config(layout="wide")
@@ -84,6 +93,7 @@ def main():
 
     with st.sidebar:
         st.title("Welcome!")
+        st.text(__file__)
         if st.session_state.supabase_client:
             # supabase_session = st.session_state.supabase_client.auth.get_user()
             supabase_session = st.session_state.supabase_client.auth.get_session()
