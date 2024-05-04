@@ -83,6 +83,7 @@ def show_data():
     # st.write(st.session_state.supabase_client.postgrest)
 
 def main():
+    print('starting main()....')
     st.set_page_config(layout="wide")
 
     # initial connection to supabase
