@@ -91,8 +91,8 @@ def show_data():
 
     # for row in rows.data:
     #     st.write(f"{row['first_name']} {row['last_name']}")
-    table = st.session_state.supabase_client.table("Students")
-    st.write(table)
+    # table = st.session_state.supabase_client.table("Students")
+    # st.write(table)
     # st.write(F"{type(table)}")
     # st.write(st.session_state.supabase_client.postgrest)
 
