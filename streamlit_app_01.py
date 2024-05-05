@@ -96,7 +96,7 @@ def show_data():
     for change in changes_to_students:
         print(change)
 
-    print(F"st.session_state[\"students_table\"]={st.session_state["students_table"]}")
+    print(F"st.session_state[\"students_table\"]={st.session_state['students_table']}")
 
     # for row in rows.data:
     #     st.write(f"{row['first_name']} {row['last_name']}")
