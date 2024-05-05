@@ -80,6 +80,9 @@ def button_clicked():
         print('signup -> login')
         st.session_state.form_to_show ='login'
 
+def students_table_changed(key):
+    print("students_table_changed!!")
+
 def show_data():
     rows = st.session_state.supabase_client.table("Students").select("*").execute()
     
@@ -87,7 +90,13 @@ def show_data():
     st.dataframe(rows.data)
 
     st.write("data_editor (editable)")
-    st.data_editor(rows.data)
+    changes_to_students = st.data_editor(rows.data, on_change=students_table_changed, key="students_table", args=["students_table"])
+
+    print(F"changes_to_students={type(changes_to_students)}")
+    for change in changes_to_students:
+        print(change)
+
+    print(F"st.session_state[\"students_table\"]={st.session_state["students_table"]}")
 
     # for row in rows.data:
     #     st.write(f"{row['first_name']} {row['last_name']}")
@@ -95,6 +104,8 @@ def show_data():
     # st.write(table)
     # st.write(F"{type(table)}")
     # st.write(st.session_state.supabase_client.postgrest)
+
+
 
 def main():
     print('\n\nstarting main()....')
@@ -107,10 +118,10 @@ def main():
     # get the current user, this also checks if a user is logged in
     st.session_state.user = st.session_state.supabase_client.auth.get_user()
 
-    if st.session_state.user:
-        print(F"st.session_state.user={st.session_state.user}")
-    else:
-        print(F"st.session_state.user - no key")
+    # if st.session_state.user:
+    #     print(F"st.session_state.user={st.session_state.user}")
+    # else:
+    #     print(F"st.session_state.user - no key")
 
     # st.session_state.form_to_show = "login"
     if "form_to_show" not in st.session_state:
@@ -146,7 +157,7 @@ def main():
     if st.session_state.supabase_client:
         supabase_auth_session = st.session_state.supabase_client.auth.get_session()
         print(F"supabase_auth_session={supabase_auth_session}")
-        if supabase_session:
+        if supabase_auth_session:
             print("supabase_auth_session is not Null, showing data")
             show_data()
         else:
